@@ -3,20 +3,8 @@
 const Order = require("../models/order");
 const Cart = require("../models/cart");
 const Address = require("../models/address");
-const randomstring = require("randomstring");
 
 exports.addOrder = (req, res) => {
-  const checkPinCode = (pinCode) => {
-    Orders.find({ pinCode }).exec((err, order) => {
-      if (order) {
-        pinCode += 1;
-        checkPinCode(pinCode);
-      }
-
-      return pinCode;
-    });
-  };
-
   Cart.deleteOne({ user: req.user._id }).exec((error, result) => {
     if (error) return res.status(400).json({ error });
     if (result) {
@@ -59,15 +47,12 @@ exports.addOrder = (req, res) => {
         return { ...newItem, removeOrder };
       });
 
-      const pinCode = Math.floor(100000 + Math.random() * 900000);
-
       const userId = req.user._id;
       const order = new Order({
         ...body,
         user: userId,
         items,
         cancleOrder,
-        pinCode,
         orderStatus,
       });
       // res.send(items);
@@ -95,20 +80,6 @@ exports.getOrders = (req, res) => {
     });
 };
 
-exports.getOrdersByPin = (req, res) => {
-  const { pinCode } = req.body;
-
-  Order.findOne({ pinCode }).exec((err, order) => {
-    if (order) {
-      return res.status(200).json({ order });
-    }
-    if (err) {
-      return res.status(400).json({ message: "pin Not Found" });
-    }
-    return res.status(400).json({ message: "pin Not Found" });
-  });
-};
-
 exports.getOrder = (req, res) => {
   Order.findOne({ _id: req.body.orderId })
     .populate("items.productId", "_id name productPictures")
@@ -117,13 +88,8 @@ exports.getOrder = (req, res) => {
       if (error) return res.status(400).json({ error });
       if (order) {
         console.log(order.totalAmount);
-        const hasItem = order.user == req.user._id ? true : false;
-        console.log(order.user);
-        console.log(req.user._id);
-        console.log(hasItem);
-
         Address.findOne({
-          user: order.user,
+          user: req.user._id,
         }).exec((error, address) => {
           if (error) return res.status(400).json({ error });
           order.address = address.address.find(
@@ -131,20 +97,11 @@ exports.getOrder = (req, res) => {
           );
           res.status(200).json({
             order,
-            hasItem,
           });
         });
       }
     });
 };
-
-exports.getCustomerOrders = async (req, res) => {
-  const orders = await Order.find({})
-    .populate("items.productId", "name")
-    .exec();
-  res.status(200).json({ orders });
-};
-
 exports.cancleOrders = async (req, res) => {
   try {
     const customerOrder = await Order.findById(req.body.orderId);

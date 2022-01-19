@@ -4,7 +4,7 @@
   "description": "backend for soulbyindian",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "mern",

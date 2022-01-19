@@ -98,7 +98,7 @@ app.use("/api", adminOrderRoute);
 app.use("/api", wishListRoutes);
 app.use("/api", homeBannerRoutes);
 
-const port = process.env.PORT || 7000
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
 });
