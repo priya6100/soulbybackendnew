@@ -68,7 +68,8 @@ app.set("view engine", "ejs");
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.u4bvv.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
+  //  `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.u4bvv.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.bctej.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
     // `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.7uw5h.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,

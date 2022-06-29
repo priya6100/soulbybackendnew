@@ -48,3 +48,28 @@ exports.getAddress = (req, res) => {
     }
   });
 };
+
+
+
+
+//remove Address//
+exports.removeAddressList = (req, res) => {
+  const { addressId } = req.body.payload;
+  if (addressId) {
+    UserAddress.updateOne(
+      { user: req.user._id },
+      {
+        $pull: {
+          address: {
+            address: addressId,
+          },
+        },
+      }
+    ).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        res.status(202).json({ result });
+      }
+    });
+  }
+};

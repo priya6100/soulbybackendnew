@@ -14,6 +14,10 @@ const orderSchema = new mongoose.Schema(
       ref: "UserAddress.address",
       required: true,
     },
+    pinCode: {
+      type: Number,
+      require: true,
+    },
     totalAmount: {
       type: Number,
       required: true,

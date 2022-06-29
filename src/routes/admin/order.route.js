@@ -12,8 +12,8 @@ const router = express.Router();
 router.post(`/order/update`, requireSignin, adminMiddleware, updateOrder);
 router.get(
   `/order/getCustomerOrders`,
-  // requireSignin,
-  // adminMiddleware,
+  requireSignin,
+  adminMiddleware,
   getCustomerOrders
 );
 
